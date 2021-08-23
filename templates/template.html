@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Spotify Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.0/dist/quartz/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css"/>
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.3.1/dt-1.10.25/datatables.min.css"/>
+   <style>
+   .card{
+       background-image: linear-gradient(125deg,rgba(255,255,255,.2),rgba(255,255,255,.1) 70%);    
+   }
+
+   </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="crossorigin="anonymous"></script>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.3.1/dt-1.10.25/datatables.min.js"></script>
+    <script>
+        $( document ).ready(function() {
+            var history_table = $('#history_table').DataTable();
+            history_table.columns( '#date' ).order( 'desc' ).draw();
+            var song_table = $('#song_table').DataTable();
+            song_table.columns( '#nb' ).order( 'desc' ).draw();
+            var artist_table = $('#artist_table').DataTable();
+            artist_table.columns( '#nb' ).order( 'desc' ).draw();
+
+            $( "#bhistory" ).click(function() {
+                $("#history").fadeIn("slow")
+                $("#songs").fadeOut("slow")
+                $("#artists").fadeOut("slow")
+            });
+            $( "#bsongs" ).click(function() {
+                $("#songs").fadeIn("slow")
+                $("#artists").fadeOut("slow")
+                $("#history").fadeOut("slow")
+            });
+            $( "#bartists" ).click(function() {
+                $("#artists").fadeIn("slow")
+                $("#songs").fadeOut("slow")
+                $("#history").fadeOut("slow")
+            });
+        });
+    </script>
+    <div class="row">
+    <div class="col-8 mx-auto">
+    <div class="card" style="margin: 20px;">
+        <div class="card-body">
+            <h4 class="card-title">Spotify Analysis</h4>
+
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                     <h4 class="card-title">Total Music Listening Time</h4>
+                    <p class="card-text" style="font-size: 18px;">You've listened to&nbsp;<b>{{total}}</b> of&nbsp; Music</p>
+                                    <h4 class="card-title">Favorite Artist</h4>
+                    <p class="card-text" style="font-size: 18px;">Your favorite artist is&nbsp;<b>{{favorite_artist.0}}</b> and you've listened to him <b>{{favorite_artist.2}}</b> times for a total of&nbsp;<b>{{favorite_artist.1}}</b><br></p>
+                                        <h4 class="card-title">Favorite Track</h4>
+                    <p class="card-text" style="font-size: 18px;">Your favorite track is&nbsp;<b>{{favorite_song.0}}</b> and you've listened to it <b>{{favorite_song.2}}</b> times for a total of&nbsp;<b>{{favorite_song.1}}</b><br></p>                   
+                </div>
+            </div>
+            <div class="card text-center" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <h4 class="card-title">Display</h4>
+                    <form class="text-center">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-primary" type="button" id="bhistory">All History</button>
+                            <button class="btn btn-primary" type="button" id="bsongs">Tracks</button>
+                            <button class="btn btn-primary" type="button" id="bartists">Artists</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+<div style="max-width: 900px; margin: auto;display: none;" id="history">
+                <table class="table table-striped table-hover" id="history_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 33.3%" id="date">Date</th>
+                            <th style="width: 33.3%">Artist</th>
+                            <th style="width: 33.3%">Track</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in history %} 
+                        <tr>
+                            <td>{{h.0}}</td>
+                            <td>{{h.1}}</td>
+                            <td>{{h.2}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div style="max-width: 900px; margin: auto; display: none;" id="artists">
+                <table class="table table-striped table-hover" id="artist_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 33.3%">Name</th>
+                            <th style="width: 33.3%" id="nb">Nb of Listen</th>
+                            <th style="width: 33.3%">Listening Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in artists %} 
+                        <tr>
+                            <td>{{h.0}}</td>
+                            <td>{{h.2}}</td>
+                            <td>{{h.1}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div style="max-width: 900px; margin: auto; display: none;" id="songs">
+                <table class="table table-striped table-hover" id="song_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 33.3%">Name</th>
+                            <th style="width: 33.3%" id="nb">Nb of Listen</th>
+                            <th style="width: 33.3%">Listening Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in songs %} 
+                        <tr>
+                            <td>{{h.0}}</td>
+                            <td>{{h.2}}</td>
+                            <td>{{h.1}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+
+</html>
