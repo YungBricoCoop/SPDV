@@ -11,6 +11,7 @@ And then install the dependencies
 ```
 
 # Run
+Before running the script you just need to put your personal spotify history files inside the **streamingHistory** folder of the project, the name of thoses files starts with **StreamingHistory** and ends with a number like this : **StreamingHistory4**
 
 To to get the desired result you just have to use this two commands in this order :
 ```bash
